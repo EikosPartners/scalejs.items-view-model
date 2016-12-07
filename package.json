@@ -1,0 +1,21 @@
+{
+  "name": "items-view-model",
+  "version": "0.0.9",
+  "dependencies": {
+    "knockout": "^3.4.0",
+    "jquery": "^2.2.4",
+    "rxjs": "^5.0.0-rc.2"
+  },
+  "description": "package to connect to server and update data viewModel for slick grid",
+  "main": "./dist/index.js",
+  "scripts": {
+    "compile": "babel --presets es2015 -d dist/ src/",
+    "prepublish": "npm run compile"
+  },
+  "author": "Blake DeBoer",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-preset-es2015": "^6.18.0"
+  }
+}
