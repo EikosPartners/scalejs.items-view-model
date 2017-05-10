@@ -2,6 +2,7 @@
 
 import $ from 'jquery';
 import ko from 'knockout';
+import Rx from 'rxjs/Rx';
 import { subscribeToSymbolType } from './utils/symbols';
 import { defaultFormatter } from './utils/formatters';
 import * as coreFuncs from './utils/coreFunctions';
@@ -17,7 +18,7 @@ export default function (containerId, columns, keyFields, createServerConnection
         computed = ko.computed,
         merge = coreFuncs.merge,
         //clone = coreFuncs.clone,      //not in use
-        //Observable = rx.Observable,
+        Observable = Rx.Observable,
 
         // emsblotter
         serverConnection = createServerConnection(containerId), //calls the function createView from createViewFactory
@@ -196,9 +197,9 @@ export default function (containerId, columns, keyFields, createServerConnection
         subscribeToSymbolType(columns)
     ]);
 
-    //if (serverConnection.quickSearch !== undefined) {
+    // if (serverConnection.quickSearch !== undefined) {
     //    sub.push(subscribeToQuickSearchInput());
-    //}
+    // }
 
     function registerMessageHandler(jsonType, handler) {
         messageHandlers[jsonType] = messageHandlers[jsonType] || [];
@@ -288,3 +289,5 @@ export default function (containerId, columns, keyFields, createServerConnection
 
     return viewModel;
 };
+
+

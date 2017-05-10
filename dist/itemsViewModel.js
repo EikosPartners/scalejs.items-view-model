@@ -15,7 +15,8 @@ exports.default = function (containerId, columns, keyFields, createServerConnect
         merge = coreFuncs.merge,
 
     //clone = coreFuncs.clone,      //not in use
-    //Observable = rx.Observable,
+    Observable = _Rx2.default.Observable,
+
 
     // emsblotter
     serverConnection = createServerConnection(containerId),
@@ -186,9 +187,9 @@ exports.default = function (containerId, columns, keyFields, createServerConnect
     // keep track of all subscriptions for disposal
     sub.concat([subscribeToUser(), subscribeToWindowItems(), (0, _symbols.subscribeToSymbolType)(columns)]);
 
-    //if (serverConnection.quickSearch !== undefined) {
+    // if (serverConnection.quickSearch !== undefined) {
     //    sub.push(subscribeToQuickSearchInput());
-    //}
+    // }
 
     function registerMessageHandler(jsonType, handler) {
         messageHandlers[jsonType] = messageHandlers[jsonType] || [];
@@ -283,6 +284,10 @@ var _jquery2 = _interopRequireDefault(_jquery);
 var _knockout = require('knockout');
 
 var _knockout2 = _interopRequireDefault(_knockout);
+
+var _Rx = require('rxjs/Rx');
+
+var _Rx2 = _interopRequireDefault(_Rx);
 
 var _symbols = require('./utils/symbols');
 

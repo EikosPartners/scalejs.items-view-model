@@ -529,11 +529,11 @@ export default function (options) {
     function wireColumnPicker() {
 
         //Listen for the window opening so column arrangement can be rewired if the columns are add or removed
-        _grid.columnPickerWindow.addEventListener("shown", function(e) {
+        _grid.columnPickerWindow.on("shown", function(e) {
             _grid.onHeaderRowRendered.subscribe(wireColumnArrangment);
         });
 
-        _grid.columnPickerWindow.addEventListener("hidden", function (e) {
+        _grid.columnPickerWindow.on("hidden", function (e) {
             _grid.onHeaderRowRendered.unsubscribe(wireColumnArrangment);
         });
 
