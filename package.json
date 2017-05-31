@@ -1,6 +1,6 @@
 {
   "name": "items-view-model",
-  "version": "0.0.13",
+  "version": "0.0.20",
   "dependencies": {
     "knockout": "^3.4.0",
     "jquery": "^2.2.4",

@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.constants = exports.baseConnection = exports.createConnection = exports.version = exports.usernameEndpoint = exports.envToken = exports.marketEndpoint = exports.csvEndpoint = exports.endpoint = exports.userThemeJson = exports.profileJson = exports.username = undefined;
+exports.constants = exports.createConnection = exports.version = exports.usernameEndpoint = exports.envToken = exports.marketEndpoint = exports.csvEndpoint = exports.endpoint = exports.userThemeJson = exports.profileJson = exports.username = undefined;
 
 var _knockout = require('knockout');
 
@@ -47,12 +47,17 @@ username = observable(undefined),
     password = "ems14";
 
 // Open a web socket
-function createConnection(connectionObj, connectionEndpoint, viewId) {
+function createConnection(connectionObj, connectionEndpointType, viewId, port) {
     var lastTimeId,
         lastTimeIdCount = 0;
     // This function opens a new websocket, extends the websocket with certain functions, and returns the enhanced websocket connection.
-    var isMarketData = connectionEndpoint === "market",
-        URL = isMarketData ? urlMarketData() : url();
+    var isMarketData = connectionEndpointType === "market";
+
+    if (isMarketData) {
+        URL = urlMarketData();
+    } else {
+        URL = port != undefined ? 'ws://' + location.hostname + ':' + port : url();
+    }
 
     if (connectionObj == null) {
         console.debug("[" + viewId + "] opening new connection!");
@@ -488,8 +493,10 @@ urlMarketData = computed(function () {
     return marketEndpoint();
 });
 
-exports.baseConnection = baseConnection = createConnection(null, null, "base connection"); //since no argument is passed in, baseConnection is equal to the object called connectionObj defined above
+/* Not needed as no profile is being shared with the server
+baseConnection = createConnection(null, null, "base connection"); //since no argument is passed in, baseConnection is equal to the object called connectionObj defined above
 //baseConnection.registerLoginCallback(core.startupScreen.processFinished);
+*/
 var constants = {
     PROFILEJSONNAME: PROFILEJSONNAME
 };
@@ -504,5 +511,4 @@ exports.envToken = envToken;
 exports.usernameEndpoint = usernameEndpoint;
 exports.version = version;
 exports.createConnection = createConnection;
-exports.baseConnection = baseConnection;
 exports.constants = constants;

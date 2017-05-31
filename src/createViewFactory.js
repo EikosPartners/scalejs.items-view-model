@@ -15,6 +15,7 @@ var // imports
 
 export default function (serverParameters) {
     var viewType = serverParameters.viewType;
+    var port = serverParameters.port;
     var //additionalHandlers = additional !== undefined && additional.handlers !== undefined ? additional.handlers : {},
         additionalProperties = serverParameters.additional !== undefined && serverParameters.additional.properties !== undefined ? serverParameters.additional.properties : {},
         additionalOnWindow = serverParameters.additional !== undefined ? serverParameters.additional.onWindow : undefined;
@@ -89,7 +90,7 @@ export default function (serverParameters) {
             messageBus: new Subject(),
             windowBus: new Subject(),
             items: observableArray([]),
-            connection: createConnection(undefined, viewType.endpoint, viewId), //null indicates the connection is equal to connectionObj (an object) defined in serverService.js
+            connection: createConnection(undefined, viewType.endpoint, viewId, port), //null indicates the connection is equal to connectionObj (an object) defined in serverService.js
             jsonRequest: viewType.jsonRequest,
             jsonList: viewType.jsonList,
             currentQuery: undefined,

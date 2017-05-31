@@ -9,7 +9,7 @@ import * as coreFuncs from './utils/coreFunctions';
 import selectionModel from './utils/virtualSelectionModel';
 
 
-export default function (containerId, columns, keyFields, createServerConnection, selectionOptions, defaultSorting) {
+export default function (config, createServerConnection) {
     var // imports
         observable = ko.observable,
         observableArray = ko.observableArray,
@@ -19,6 +19,14 @@ export default function (containerId, columns, keyFields, createServerConnection
         merge = coreFuncs.merge,
         //clone = coreFuncs.clone,      //not in use
         Observable = Rx.Observable,
+
+        containerId = config.containerId,
+        columns = config.columns,
+        keyFields = config.keyFields,
+        selectionOptions = config.selectionOptions,
+        defaultSorting = config.defaultSorting,
+        filterInputThrottle = config.filterInputThrottle,
+        viewportThrottle = config.viewportThrottle,
 
         // emsblotter
         serverConnection = createServerConnection(containerId), //calls the function createView from createViewFactory
@@ -107,7 +115,7 @@ export default function (containerId, columns, keyFields, createServerConnection
             filters: filtersObservable(),
             sort: sorting()
         };
-    }).extend({ throttle: 100 });
+    }).extend({ throttle: viewportThrottle });
 
     // subscriptions
 
@@ -164,7 +172,7 @@ export default function (containerId, columns, keyFields, createServerConnection
                         return merge({ column: column.field }, quickSearchExpression);
                     });
             })
-            .throttle(300)
+            .throttle(filterInputThrottle)
             .subscribe(function (quickSearchExpression) {
                 // Temporary workaround until a better quickSearch method is used to query the backend:
                 var values = serverConnection.quickSearch(quickSearchExpression);

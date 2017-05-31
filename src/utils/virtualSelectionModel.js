@@ -1,6 +1,5 @@
 import $ from 'jquery';
 import ko from 'knockout';
-//import windowfactory
 import Rx from 'rxjs/Rx';
 import './linq.wrapper.js';
 
@@ -102,10 +101,6 @@ export default function (options) {
 
         //Set up mouse events to respond to column reordering
         wireColumnArrangment();
-
-        //See if the column picker is present
-        if (!grid.getOptions().disableColumnPicker)
-            wireColumnPicker();
     }
 
     //Hides the right click menu if present
@@ -136,7 +131,7 @@ export default function (options) {
         var triggerColumnMouseOver = args.triggerColumnMouseOver;
 
         //Get reference to the container window to wire the column listeners
-        var wnd = windowfactory.Window.getCurrent();
+        var wnd = windowmanager.Window.getCurrent();
         wnd.onReady(function() {
             _handler.subscribe(_grid.onColumnsReordered, wrapHandler(wireDragDrop));
             wireDragDrop();
@@ -340,7 +335,7 @@ export default function (options) {
             _grid.onHeaderRowRendered.unsubscribe(prepArrangement);
             parentRow = args.headerRow;
 
-            var wnd = windowfactory.Window.getCurrent();
+            var wnd = windowmanager.Window.getCurrent();
             wnd.onReady(function () {
                 _handler.subscribe(_grid.onColumnsReordered, wrapHandler(wireResizing));
                 wireResizing();
@@ -522,20 +517,6 @@ export default function (options) {
             var e = { target: col };
             columnMouseOver(e);
         }
-
-    }
-
-    //Sets handlers when the column picker windows is shown and hidden to make sure the column arrangement wiring is restored
-    function wireColumnPicker() {
-
-        //Listen for the window opening so column arrangement can be rewired if the columns are add or removed
-        _grid.columnPickerWindow.on("shown", function(e) {
-            _grid.onHeaderRowRendered.subscribe(wireColumnArrangment);
-        });
-
-        _grid.columnPickerWindow.on("hidden", function (e) {
-            _grid.onHeaderRowRendered.unsubscribe(wireColumnArrangment);
-        });
 
     }
 

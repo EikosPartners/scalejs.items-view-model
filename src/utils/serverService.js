@@ -34,12 +34,17 @@ var // imports
     password = "ems14";
 
 // Open a web socket
-function createConnection(connectionObj, connectionEndpoint, viewId) {
+function createConnection(connectionObj, connectionEndpointType, viewId, port) {
     var lastTimeId,
         lastTimeIdCount = 0;
     // This function opens a new websocket, extends the websocket with certain functions, and returns the enhanced websocket connection.
-    var isMarketData = connectionEndpoint === "market",
-        URL = isMarketData ? urlMarketData() : url();
+    var isMarketData = connectionEndpointType === "market";
+
+    if (isMarketData) {
+        URL = urlMarketData()
+    } else {
+        URL = port != undefined ? `ws://${location.hostname}:${port}` : url();
+    }
 
     if (connectionObj == null) {
         console.debug("[" + viewId + "] opening new connection!");
@@ -480,11 +485,14 @@ urlMarketData = computed(function () {
     return marketEndpoint();
 });
 
+/* Not needed as no profile is being shared with the server
 baseConnection = createConnection(null, null, "base connection"); //since no argument is passed in, baseConnection is equal to the object called connectionObj defined above
 //baseConnection.registerLoginCallback(core.startupScreen.processFinished);
+*/
 var constants = {
 	PROFILEJSONNAME: PROFILEJSONNAME
 };
+
 
 
 export {
@@ -498,6 +506,5 @@ export {
     usernameEndpoint,
     version,
     createConnection,
-    baseConnection,
     constants
 };

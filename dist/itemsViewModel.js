@@ -4,7 +4,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-exports.default = function (containerId, columns, keyFields, createServerConnection, selectionOptions, defaultSorting) {
+exports.default = function (config, createServerConnection) {
     var // imports
     observable = _knockout2.default.observable,
         observableArray = _knockout2.default.observableArray,
@@ -16,6 +16,13 @@ exports.default = function (containerId, columns, keyFields, createServerConnect
 
     //clone = coreFuncs.clone,      //not in use
     Observable = _Rx2.default.Observable,
+        containerId = config.containerId,
+        columns = config.columns,
+        keyFields = config.keyFields,
+        selectionOptions = config.selectionOptions,
+        defaultSorting = config.defaultSorting,
+        filterInputThrottle = config.filterInputThrottle,
+        viewportThrottle = config.viewportThrottle,
 
 
     // emsblotter
@@ -108,7 +115,7 @@ exports.default = function (containerId, columns, keyFields, createServerConnect
             filters: filtersObservable(),
             sort: sorting()
         };
-    }).extend({ throttle: 100 });
+    }).extend({ throttle: viewportThrottle });
 
     // subscriptions
 
@@ -159,7 +166,7 @@ exports.default = function (containerId, columns, keyFields, createServerConnect
             }).select(function (quickSearchExpression) {
                 return merge({ column: column.field }, quickSearchExpression);
             });
-        }).throttle(300).subscribe(function (quickSearchExpression) {
+        }).throttle(filterInputThrottle).subscribe(function (quickSearchExpression) {
             // Temporary workaround until a better quickSearch method is used to query the backend:
             var values = serverConnection.quickSearch(quickSearchExpression);
 
