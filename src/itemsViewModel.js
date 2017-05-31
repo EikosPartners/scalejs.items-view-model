@@ -123,7 +123,7 @@ export default function (config, createServerConnection) {
         function _query(window) {
             var query = {
                 containerId: containerId,
-                start: window.start + 1,
+                start: window.start,
                 count: window.size,
                 filters: window.filters,
                 sort: window.sort
@@ -145,7 +145,7 @@ export default function (config, createServerConnection) {
                 // Ignore responses to a previous request
                 //if (response.requestId !== serverConnection.requestId) return; // Handled in createViewFactory
 
-                response.start = Math.max((response.args[0].start || 0) - 1, 0);
+                response.start = Math.max((response.args[0].start || 0), 0);
 
                 //index corresponds to row id #
                 response.list.forEach(function (item, index) {
